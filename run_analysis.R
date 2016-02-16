@@ -12,6 +12,8 @@ read.harusd <- function(dataDir, colNames){
 }
 
 dataDir <- "UCIHARDataset"
+outDir <- "output"
+if (!file.exists(outDir)) dir.create(outDir)
 
 # read column names
 featNames <- fread(paste0(dataDir,"/features.txt"))$V2
@@ -33,6 +35,10 @@ outDat <- activityNames[outDat,on="activityid"]
 
 # Appropriately labels the data set with descriptive variable names.
 names(outDat) <- tolower(gsub("\\.$","",gsub("[^a-zA-Z0-9]+","\\.",names(outDat))))
+names(outDat) <- gsub("^t","time",names(outDat))
+names(outDat) <- gsub("^f","freq",names(outDat))
+write.csv(outDat,paste0(outDir,"/tidyData1.csv"))
 
 # Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 summaryDat <- outDat[, lapply(.SD, mean), by=list(activityid,activityname,subjid)]
+write.csv(summaryDat,paste0(outDir,"/tidyData2.csv"))
