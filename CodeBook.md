@@ -74,4 +74,5 @@ write.csv(outDat,paste0(outDir,"/tidyData1.csv"))
 #### Create a second, independent tidy data set with the average of each variable for each activity and each subject.
 ```{r}
 summaryDat <- outDat[, lapply(.SD, mean), by=list(activityid,activityname,subjid)]
+write.csv(summaryDat,paste0(outDir,"/tidyData2.csv"))
 ```
